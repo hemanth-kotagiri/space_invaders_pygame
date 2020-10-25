@@ -2,6 +2,8 @@ import pygame
 import random
 import math
 from pygame import mixer
+import os
+import platform
 
 pygame.init()
 
@@ -38,7 +40,12 @@ playerYChange = 0
 background = pygame.image.load('background.jpg')
 
 # Background music
-mixer.music.load('bgm.mp3')
+if platform.system() == "Linux":
+    music_file_name = "bgm.ogg"
+else:
+    music_file_name = "bgm.mp3"
+
+mixer.music.load(music_file_name)
 mixer.music.play(-1)
 
 
@@ -110,7 +117,7 @@ while running:
             if event.key == pygame.K_RIGHT:
                 playerXChange = 5
             if event.key == pygame.K_SPACE:
-                if bullet_state is 'ready':
+                if bullet_state == 'ready':
                     bulletSound = mixer.Sound('laser.wav')
                     bulletSound.play()
                     bulletX = playerX
@@ -160,7 +167,7 @@ while running:
     if bulletY <= 0:
         bulletY = 480
         bullet_state = 'ready'
-    if bullet_state is 'fire':
+    if bullet_state == 'fire':
         fireBullet(bulletX, bulletY)
         bulletY -= bulletYChange
 
